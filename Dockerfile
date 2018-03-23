@@ -252,11 +252,12 @@ RUN echo "cgi.fix_pathinfo=0" > ${php_vars} &&\
 #    ln -s /etc/php7/php.ini /etc/php7/conf.d/php.ini && \
 #    find /etc/php7/conf.d/ -name "*.ini" -exec sed -i -re 's/^(\s*)#(.*)/\1;\2/g' {} \;
 
+RUN echo php_flag[display_errors] = off >> /usr/local/etc/php-fpm.conf
 
-# Add Scripts
-ADD scripts/start.sh /start.sh
-RUN chmod 755 /start.sh
+RUN sed -i "s/server_tokens on;/server_tokens off;/g" /etc/nginx/nginx.conf
+RUN sed -i "s/expose_php = On/expose_php = Off/g" /usr/local/etc/php-fpm.conf
+
+RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/docker-vars.ini
+RUN echo "error_log = /dev/stderr" >> /usr/local/etc/php/conf.d/docker-vars.ini
 
 EXPOSE 80
-
-CMD ["/start.sh"]
