@@ -213,11 +213,11 @@ RUN echo @testing http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repo
     apk del gcc musl-dev linux-headers libffi-dev augeas-dev python-dev make autoconf
 #    ln -s /usr/bin/php7 /usr/bin/php
 
-ADD conf/supervisord.conf /etc/supervisord.conf
+ADD ../conf/supervisord.conf /etc/supervisord.conf
 
 # Copy our nginx config
 RUN rm -Rf /etc/nginx/nginx.conf
-ADD conf/nginx.conf /etc/nginx/nginx.conf
+ADD ../conf/nginx.conf /etc/nginx/nginx.conf
 
 # nginx site conf
 RUN mkdir -p /etc/nginx/sites-available/ && \
@@ -225,7 +225,7 @@ mkdir -p /etc/nginx/sites-enabled/ && \
 mkdir -p /etc/nginx/ssl/ && \
 rm -Rf /var/www/* && \
 mkdir /var/www/html/
-ADD conf/nginx-site.conf /etc/nginx/sites-available/default.conf
+ADD ../conf/nginx-site.conf /etc/nginx/sites-available/default.conf
 RUN ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default.conf
 
 # tweak php-fpm config
