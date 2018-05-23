@@ -54,7 +54,9 @@ RUN apt-get update \
     libsqlite3-dev \
     libmcrypt-dev \
     libicu-dev \
-    libxslt-dev\
+    libxslt-dev \
+    libxrender1 \
+    libxext6 \
     libjpeg62-turbo-dev && \
     docker-php-ext-configure gd \
       --with-gd \
