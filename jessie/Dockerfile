@@ -13,7 +13,8 @@ ENV SERVER hkp://keyserver.ubuntu.com:80
 RUN apt-get update \
 	&& apt-get install --no-install-recommends --force-yes --no-install-suggests -y \
   supervisor \
-  wget
+  wget \
+  gnupg
 
 RUN apt-key adv --keyserver ${SERVER} --keyserver-options timeout=10 --recv-keys ${GPG_KEYS} \
 	&& echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list \
@@ -57,6 +58,8 @@ RUN apt-get update \
     libxslt-dev \
     libxrender1 \
     libxext6 \
+    pkg-config \
+    libssl-dev \
     libjpeg62-turbo-dev && \
     docker-php-ext-configure gd \
       --with-gd \
@@ -80,6 +83,10 @@ RUN apt-get update \
     pip install -U pip && \
     apt-get remove gcc musl-dev libffi-dev python-dev make autoconf -y
 #    ln -s /usr/bin/php7 /usr/bin/php
+
+RUN docker-php-ext-install bcmath
+RUN echo "extension=mongodb.so" >> /usr/local/etc/php/conf.d/mongodb.ini
+RUN docker-php-ext-install mbstring
 
 ADD conf/supervisord.conf /etc/supervisord.conf
 
