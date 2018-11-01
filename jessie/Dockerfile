@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.1-fpm-jessie
 
 LABEL maintainer="Nimrod Nagy <nimrod.nagy@lynxsolutions.eu>"
 
@@ -6,14 +6,17 @@ ENV php_conf /usr/local/etc/php-fpm.conf
 ENV fpm_conf /usr/local/etc/php-fpm.d/www.conf
 ENV php_vars /usr/local/etc/php/conf.d/docker-vars.ini
 
-ENV NGINX_VERSION 1.13.2-1~jessie
+ENV NGINX_VERSION 1.15.5-1~jessie
 ENV GPG_KEYS B0F4253373F8F6F510D42178520A9993A1C052F8
 ENV SERVER hkp://keyserver.ubuntu.com:80
 
-RUN apt-get update \
+RUN apt-get update  \
 	&& apt-get install --no-install-recommends --force-yes --no-install-suggests -y \
   supervisor \
-  wget
+  wget \
+	gnupg2 \
+	dirmngr
+
 
 RUN apt-key adv --keyserver ${SERVER} --keyserver-options timeout=10 --recv-keys ${GPG_KEYS} \
 	&& echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list \
