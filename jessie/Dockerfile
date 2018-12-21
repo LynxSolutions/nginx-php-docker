@@ -54,7 +54,6 @@ RUN apt-get update \
     python-pip \
     ca-certificates \
     dialog \
-    autoconf \
     make \
     gcc \
     musl-dev \
@@ -67,12 +66,16 @@ RUN apt-get update \
     libxslt-dev \
     libxrender1 \
     libxext6 \
-    libjpeg62-turbo-dev && \
+    libjpeg62-turbo-dev \
+    libmagickcore-dev \
+    libmagickwand-dev && \
     docker-php-ext-configure gd \
       --with-gd \
       --with-freetype-dir=/usr/include/ \
       --with-png-dir=/usr/include/ \
       --with-jpeg-dir=/usr/include/ && \
+    yes '' | pecl install imagick-3.4.3 && \
+    docker-php-ext-enable imagick && \
     #curl iconv session
     docker-php-ext-install pdo_mysql pdo_sqlite mysqli mcrypt gd exif intl xsl json soap dom zip opcache bcmath mbstring && \
     pecl install xdebug && \
